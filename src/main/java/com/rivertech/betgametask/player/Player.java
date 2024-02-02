@@ -1,33 +1,37 @@
 package com.rivertech.betgametask.player;
 
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
 import lombok.Builder;
-import javax.persistence.Id;
+
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import javax.persistence.OneToOne;
+import jakarta.persistence.OneToOne;
+
+
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import jakarta.persistence.Id;
 import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.wallet.Wallet;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Data // Lombok automatically generates common methods such as toString, equals, hashCode, and getters/setters
-@Entity // It indicates that the class is a JPA entity, representing a table in a relational database.
+@Data
+@Entity
 @Builder
-@NoArgsConstructor // Class 'Player' should have [public, protected] no-arg constructor 
-@AllArgsConstructor // Builder need a proper constructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "User of the game application")
 public class Player {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String name;
@@ -40,7 +44,7 @@ public class Player {
     @Schema(description = "Bets that belongs to / made by  the player", nullable = true)
     private List<Bet> bets;
 
-    @OneToOne(mappedBy = "player")
+    @OneToOne
     @Schema(description = "Player's balance")
     private Wallet wallet;
 

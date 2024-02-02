@@ -8,10 +8,12 @@ import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.List;
 
@@ -20,20 +22,23 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@Table(name = "game")
 @Schema(description = "Game to bet on")
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    private String description;
+
     @Schema(description = "Bets related to a game")
-    @OneToMany(mappedBy = "game")
+    @OneToMany
     private List<Bet> bets;
 
     @Schema(description = "Time when the game was played")
     private Instant executedAt;
 
-    private int gameResult;
+    private Integer gameResult;
 
 }
