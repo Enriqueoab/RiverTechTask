@@ -1,4 +1,4 @@
-package com.rivertech.betgametask.leaderboard;
+package com.rivertech.betgametask.player;
 
 import java.util.List;
 import com.rivertech.betgametask.bet.Bet;
