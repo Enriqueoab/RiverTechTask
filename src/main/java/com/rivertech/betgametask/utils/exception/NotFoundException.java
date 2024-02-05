@@ -4,6 +4,7 @@ import java.io.Serial;
 
 public class NotFoundException extends RiverTechGameException {
 
+    @Serial
     private static final long serialVersionUID = 1453316100622498951L;
 
     public NotFoundException(String message) {

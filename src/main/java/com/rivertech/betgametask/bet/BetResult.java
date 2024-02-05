@@ -1,5 +1,24 @@
 package com.rivertech.betgametask.bet;
 
 public enum BetResult {
-    FIRST_PRICE, SECOND_PRICE, THIRD_PRICE, LOST
+
+    WIN_10X(0,10, "FIRST_PRICE"),
+    WIN_5X(1, 5, "SECOND_PRICE"),
+    WIN_HALF(2, 0.5, "THIRD_PRICE"),
+    LOSE(3, 0, "LOST");
+
+    public final int betNumDifference;
+    public final double multiplier;
+    public final String message;
+
+    BetResult(int betNumDifference, double multiplier, String message) {
+        this.betNumDifference = betNumDifference;
+        this.multiplier = multiplier;
+        this.message = message;
+    }
+
+    public double calculatePrice(Long playerBetAmount) {
+        return multiplier * playerBetAmount;
+    }
+
 }

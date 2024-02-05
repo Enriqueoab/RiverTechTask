@@ -1,6 +1,9 @@
 package com.rivertech.betgametask.game;
 
 import com.rivertech.betgametask.bet.Bet;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -14,8 +17,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.ToString;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Data
 @Entity
@@ -24,16 +33,21 @@ import java.util.List;
 @AllArgsConstructor
 //@Table(name = "game")
 @Schema(description = "Game to bet on")
-public class Game {
+public class Game implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 6616075746479326243L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String description;
 
+//    @JoinTable(name = "bet", joinColumns = @JoinColumn(name = "game_id"))
+//    @ToString.Exclude
     @Schema(description = "Bets related to a game")
-    @OneToMany
+    @OneToMany(mappedBy = "game", cascade = CascadeType.PERSIST)
     private List<Bet> bets;
 
     @Schema(description = "Time when the game was played")
@@ -41,4 +55,10 @@ public class Game {
 
     private Integer gameResult;
 
+    public Game play(Game game) {
+        Random rand = new Random();
+        game.setGameResult(rand.nextInt(1,11));
+        game.setExecutedAt(Instant.now());
+    return game;
+    }
 }
