@@ -43,13 +43,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findById(Long id) throws NotFoundException {
-        return playerRepo.findById(id).orElseThrow(() -> new NotFoundException("Player Not Found"));
-    }
-
-    @Override
-    public List<Player> findAllByIdIn(List<Long> playerIds) {
-        return playerRepo.findAllByIdIn(playerIds);
+    public boolean existsByUserName(String userName) {
+        return playerRepo.existsByUserName(userName);
     }
 
     @Override
@@ -58,13 +53,6 @@ public class PlayerServiceImpl implements PlayerService {
         log.info("Storing player  ->  user name: {}, wallet ID: {}", player.getUserName(), player.getWallet().getId());
         return playerRepo.save(player);
     }
-
-    @Override
-    public Player findByWalletId(int walletId) {
-        log.error("---------------> wallet ID: {}", walletId);
-        return playerRepo.findByWalletId(walletId);
-    }
-
 
     // Get getLeaderboard
             // Return from repo LeaderboardProjection @EntityGraph(value = "Job.jobHistory")?

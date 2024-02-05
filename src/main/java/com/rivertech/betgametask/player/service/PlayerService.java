@@ -13,14 +13,11 @@ public interface PlayerService {
     @Transactional
     Player save(Player player);
 
-    Player findByWalletId(int walletId);
-
     Player findByUserName(String userName) throws NotFoundException;
 
     Player registerPlayer(RegistrationForm register) throws PlayerRequestException;
 
-    Player findById(Long id) throws NotFoundException;
+    boolean existsByUserName(String userName);
 
-    List<Player> findAllByIdIn(List<Long> playerIds);
 
 }

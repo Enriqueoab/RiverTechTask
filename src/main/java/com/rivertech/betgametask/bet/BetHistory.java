@@ -5,19 +5,14 @@ import com.rivertech.betgametask.player.Player;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.experimental.SuperBuilder;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
-
 import java.time.Instant;
 
 @Data

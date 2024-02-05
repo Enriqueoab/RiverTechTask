@@ -17,8 +17,8 @@ public enum BetResult {
         this.message = message;
     }
 
-    public double calculatePrice(Long playerBetAmount) {
-        return multiplier * playerBetAmount;
+    public Long calculatePrice(Long playerBetAmount) {
+        return (long) (multiplier * playerBetAmount);
     }
 
 }

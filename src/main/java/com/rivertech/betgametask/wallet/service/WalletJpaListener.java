@@ -28,12 +28,14 @@ public class WalletJpaListener {
         this.walletHistoryService = walletHistoryService;
     }
 
+
+    // TODO: Change it to wallet listener
     @PostPersist
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void afterPersist(Player player) {
         log.info("New player wallet History record, wallet ID: {}", player.getWallet().getBalance());
-        var walletHistory = new WalletHistory(player, TransactionType.BALANCE_ADDED);
-        walletHistoryService.save(walletHistory);
+//        var walletHistory = new WalletHistory(player, TransactionType.BALANCE_ADDED);
+//        walletHistoryService.save(walletHistory);
     }
 
 }

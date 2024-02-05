@@ -57,10 +57,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-//    @Transactional
-    // TODO: Should I make it @Async so we send ingo to user and keep
-    //  doing the rest???
     public Game executeGame(int gameId) throws NotFoundException {
+        log.info("Executing game with ID: {}...",gameId);
         var game = gameRepo.findById(gameId).orElseThrow(() -> new NotFoundException("Game Not Found"));
         gameRepo.saveAndFlush(game.play(game));
         betService.priceBetCalculator(game);

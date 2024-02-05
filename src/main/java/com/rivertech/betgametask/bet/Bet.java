@@ -44,7 +44,7 @@ public class Bet implements Serializable {
 
     private Long betAmount;
 
-    private double wonAmount;
+    private Long wonAmount;
 
     private int betNum;
 

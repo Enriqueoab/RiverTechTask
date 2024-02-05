@@ -46,8 +46,6 @@ public class BetServiceImpl implements BetService {
                 .build();
     }
 
-    // ENDPOINT:  To retrieve the results of their bets (betHistory).
-
     public BetHistory getBetResults(String userName) throws NotFoundException {
         var player = playerService.findByUserName(userName);
         var bets = player.getBets();
@@ -56,20 +54,20 @@ public class BetServiceImpl implements BetService {
 
     @Override
     public void priceBetCalculator(Game game) {
+        log.info("Calculating bet price of game {}, with ID:{}...", game.getDescription(), game.getId());
         var bets = game.getBets().stream()
-                .peek(bet -> {
+                .map(bet -> {
                     var betResult = betResultSetter(game.getGameResult(), bet.getBetNum());
                     bet.setBetResult(betResult);
 
                     var betPrice = betResult.calculatePrice(bet.getBetAmount());
                     bet.setWonAmount(betPrice);
+                    return bet;
                 })
                 .toList();
         bets = betRepository.saveAllAndFlush(bets);
         betHistoryService.generateBetHistoryRecords(bets);
-        // Update wallet "balance" and create walletHistory
-        var players = bets.stream().map(Bet::getPlayer).toList();
-        walletService.updateBalanceByBetResult(players);
+        walletService.updateBalanceByBetWonAmount(bets);
     }
 
     private BetResult betResultSetter(int gameResult, int betNum) {

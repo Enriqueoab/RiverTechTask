@@ -1,5 +1,6 @@
 package com.rivertech.betgametask.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rivertech.betgametask.bet.Bet;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
@@ -31,7 +32,6 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Table(name = "game")
 @Schema(description = "Game to bet on")
 public class Game implements Serializable {
 
@@ -44,8 +44,7 @@ public class Game implements Serializable {
 
     private String description;
 
-//    @JoinTable(name = "bet", joinColumns = @JoinColumn(name = "game_id"))
-//    @ToString.Exclude
+    @JsonIgnore
     @Schema(description = "Bets related to a game")
     @OneToMany(mappedBy = "game", cascade = CascadeType.PERSIST)
     private List<Bet> bets;

@@ -28,6 +28,7 @@ import java.io.Serializable;
 public class Wallet implements Serializable {
 
     private final static Long REGISTRATION_INITIAL_BALANCE = 1000L;
+
     @Serial
     private static final long serialVersionUID = -6447259658138103539L;
 

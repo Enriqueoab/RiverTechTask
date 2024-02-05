@@ -1,7 +1,6 @@
 package com.rivertech.betgametask.wallet.service;
 
 import com.rivertech.betgametask.bet.Bet;
-import com.rivertech.betgametask.player.Player;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 import com.rivertech.betgametask.wallet.Wallet;
 
@@ -13,5 +12,6 @@ public interface WalletService {
 
     Wallet findById(int id) throws NotFoundException;
 
-    void updateBalanceByBetResult(List<Player> players);
+    void updateBalanceByBetWonAmount(List<Bet> bets);
+
 }

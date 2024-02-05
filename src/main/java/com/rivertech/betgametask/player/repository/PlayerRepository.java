@@ -13,5 +13,4 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
 
     Player findByWalletId(int walletId);
 
-    List<Player> findAllByIdIn(List<Long> playerIds);
 }

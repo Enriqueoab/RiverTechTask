@@ -7,6 +7,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Data;
 
 import java.io.Serial;
@@ -29,6 +30,7 @@ import jakarta.persistence.Id;
 import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.wallet.Wallet;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Setter;
 
 @Data
 @Entity
@@ -52,14 +54,15 @@ public class Player  implements Serializable {
 
     private String userName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     @Schema(description = "Bets that belongs to / made by  the player", nullable = true)
-    @JsonIgnore
     private List<Bet> bets;
 
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
     @OneToOne(cascade = CascadeType.ALL)
     @Schema(description = "Player's balance")
-    @JsonIgnore
     private Wallet wallet;
 
     public Player(String name, String surname, String userName, Wallet wallet) {
@@ -68,10 +71,4 @@ public class Player  implements Serializable {
         this.userName = userName;
         this.wallet = wallet;
     }
-
-//    @OneToMany(mappedBy = "player")
-//    @JsonIgnore
-//    private Set<WalletHistory> jobHistory;
-
-
 }
