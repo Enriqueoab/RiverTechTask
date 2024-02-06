@@ -1,38 +1,28 @@
 package com.rivertech.betgametask.bet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.player.Player;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import java.io.Serial;
 import lombok.Builder;
+import lombok.ToString;
+import java.time.Instant;
+import java.io.Serializable;
+import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.Instant;
+import com.rivertech.betgametask.game.Game;
+import com.rivertech.betgametask.player.Player;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "")
 public class Bet implements Serializable {
 
     @Serial
@@ -48,15 +38,15 @@ public class Bet implements Serializable {
 
     private int betNum;
 
-    @ToString.Exclude
-    @JsonIgnore
-    @Schema(description = "Game related to a specific bet")
     @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @Schema(description = "Game related to a specific bet")
     private Game game;
 
-    @Schema(description = "Player that made the bet")
     @ManyToOne
     @ToString.Exclude
+    @Schema(description = "Player that made the bet")
     private Player player;
 
     @Schema(description = "The time the bet was made")

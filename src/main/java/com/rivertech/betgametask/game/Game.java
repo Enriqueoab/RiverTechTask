@@ -1,32 +1,23 @@
 package com.rivertech.betgametask.game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rivertech.betgametask.bet.Bet;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import lombok.Data;
 import lombok.Builder;
+import java.util.List;
+import java.io.Serial;
+import java.util.Random;
+import java.time.Instant;
+import java.io.Serializable;
+import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import com.rivertech.betgametask.bet.Bet;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.ToString;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 @Data
 @Entity
 @Builder

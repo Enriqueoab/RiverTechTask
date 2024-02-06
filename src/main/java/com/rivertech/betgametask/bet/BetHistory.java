@@ -1,19 +1,19 @@
 package com.rivertech.betgametask.bet;
 
-import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.player.Player;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Builder;
+import java.time.Instant;
+import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.rivertech.betgametask.game.Game;
+import com.rivertech.betgametask.player.Player;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.CreatedDate;
-import java.time.Instant;
 
 @Data
 @Entity
@@ -51,6 +51,5 @@ public class BetHistory {
     @Schema(description = "Bet result, calculated by how close the bet against the game result was",
             nullable = true, example = "SECOND_PRICE", allowableValues = {"FIRST_PRICE","SECOND_PRICE","THIRD_PRICE","LOST"})
     private String betResultMessage;
-
 
 }

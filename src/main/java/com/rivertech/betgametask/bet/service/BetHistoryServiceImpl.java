@@ -1,19 +1,20 @@
 package com.rivertech.betgametask.bet.service;
 
-import com.rivertech.betgametask.bet.Bet;
-import com.rivertech.betgametask.bet.BetHistory;
-import com.rivertech.betgametask.bet.BetHistoryForm;
-import com.rivertech.betgametask.bet.repository.BetHistoryRepository;
-import com.rivertech.betgametask.player.service.PlayerService;
-import com.rivertech.betgametask.utils.exception.NotFoundException;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
+import com.rivertech.betgametask.bet.Bet;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import com.rivertech.betgametask.bet.BetHistory;
+import com.rivertech.betgametask.bet.BetHistoryForm;
+import com.rivertech.betgametask.player.service.PlayerService;
 import org.springframework.transaction.annotation.Transactional;
+import com.rivertech.betgametask.utils.exception.NotFoundException;
+import com.rivertech.betgametask.bet.repository.BetHistoryRepository;
 
-import java.util.List;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class BetHistoryServiceImpl implements BetHistoryService {
@@ -30,7 +31,7 @@ public class BetHistoryServiceImpl implements BetHistoryService {
                         .placedAt(bet.getPlacedAt())
                         .gameResult(bet.getGame().getGameResult())
                         .executedAt(bet.getGame().getExecutedAt())
-                        .betResultMessage(bet.getBetResult().message)
+                        .betResultMessage(bet.getBetResult() == null ? null : bet.getBetResult().message)
                         .playerUserName(bet.getPlayer().getUserName())
                         .build())
                 .toList();
@@ -39,6 +40,7 @@ public class BetHistoryServiceImpl implements BetHistoryService {
     @Override
     @Transactional
     public void generateBetHistoryRecords(List<Bet> bets) {
+        log.info("Generating bet history records...");
         var BetHistories = createBetHistoryRecords(bets);
         betHistoryRepository.saveAll(BetHistories);
     }

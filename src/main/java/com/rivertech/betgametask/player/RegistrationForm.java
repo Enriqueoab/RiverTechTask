@@ -1,10 +1,10 @@
 package com.rivertech.betgametask.player;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
 @Builder

@@ -1,23 +1,18 @@
 package com.rivertech.betgametask.game.controller;
 
-import com.rivertech.betgametask.bet.BetForm;
-import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.game.service.GameService;
-import com.rivertech.betgametask.utils.DefaultApiResponses;
-import com.rivertech.betgametask.utils.exception.NotFoundException;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import com.rivertech.betgametask.game.Game;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import com.rivertech.betgametask.game.service.GameService;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.rivertech.betgametask.utils.exception.DefaultApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import com.rivertech.betgametask.utils.exception.NotFoundException;
+import com.rivertech.betgametask.utils.exception.GameRequestException;
 
-@Validated
 @RestController
 @AllArgsConstructor
 @Tag(name = "Game")
@@ -26,18 +21,10 @@ class GameController {
 
     private final GameService gameService;
 
-    // TODO: Should be in bet
-    @DefaultApiResponses
-    @Operation(summary = "Place a bet")
-    @PostMapping(path = "/{gameId}/bet")
-    public Game placeBet(@Valid @RequestBody BetForm betForm, @PathVariable int gameId) throws NotFoundException {
-        return gameService.placeBet(betForm, gameId);
-    }
-
     @DefaultApiResponses
     @Operation(summary = "Execute game")
     @GetMapping(path = "/{gameId}")
-    public Game executeGame(@PathVariable int gameId) throws NotFoundException {
+    public Game executeGame(@PathVariable Long gameId) throws NotFoundException, GameRequestException {
         return gameService.executeGame(gameId);
     }
 
