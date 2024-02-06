@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,11 @@ class BetController {
 
     private final BetService betService;
 
-    @DefaultApiResponses
-    @Operation(summary = "Place a bet")
-    @PostMapping
-    public Bet placeBet( @Valid @RequestBody BetForm betForm) throws NotFoundException {
-        return betService.placeBet(betForm);
-    }
+//    @DefaultApiResponses
+//    @Operation(summary = "Place a bet")
+//    @PostMapping(path = "/{gameId}")
+//    public void placeBet( @Valid @RequestBody BetForm betForm, @PathVariable int gameId) throws NotFoundException {
+//        betService.placeBet(betForm, gameId);
+//    }
 
 }

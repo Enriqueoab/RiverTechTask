@@ -1,10 +1,6 @@
 package com.rivertech.betgametask.wallet;
 
-import com.rivertech.betgametask.player.Player;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
@@ -13,27 +9,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false) // the methods, Equals And HashCode, will only consider the fields in the current class.
 @Schema(description = "Record of the wallet in and out transactions")
-public class WalletHistory {
+public class WalletHistory implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7477013461887820482L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Schema(description = "Credit amount available")
-    private Long balance;
+    private Long balanceBeforeTransaction;
 
-    @OneToOne
-    @Schema(description = "Player's wallet")
-    private Player player;
+    private Long balanceAfterTransaction;
 
-    @Schema(description = "Kind of transaction", example = "ADDED_BALANCE", allowableValues = {"ADDED_BALANCE","PLACED_BET","EARNED_BET"})
-    private TransactionType  transactionType;
+    private int walletId;
 
+    private String transactionType;
+
+    public WalletHistory(Wallet wallet, Long balanceBefTrans, TransactionType transactionType) {
+        this.walletId = wallet.getId();
+        this.transactionType = transactionType.action;
+        this.balanceBeforeTransaction = balanceBefTrans;
+        this.balanceAfterTransaction = wallet.getBalance();
+    }
 }

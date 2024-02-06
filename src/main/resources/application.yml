@@ -2,6 +2,12 @@ server:
   port: 3000
 
 spring:
+  docker:
+    compose:
+      enabled: false
+  h2:
+    console:
+      enabled: true
   datasource:
     url: jdbc:h2:file:./src/main/resources/db/RiverTechTaskDb
     driverClassName: org.h2.Driver
