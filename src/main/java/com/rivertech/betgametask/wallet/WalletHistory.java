@@ -1,16 +1,15 @@
 package com.rivertech.betgametask.wallet;
 
 import lombok.Data;
+import java.io.Serial;
+import java.io.Serializable;
+import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.io.Serial;
-import java.io.Serializable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
 @Entity
@@ -30,7 +29,7 @@ public class WalletHistory implements Serializable {
 
     private Long balanceAfterTransaction;
 
-    private int walletId;
+    private Long walletId;
 
     private String transactionType;
 
@@ -38,6 +37,13 @@ public class WalletHistory implements Serializable {
         this.walletId = wallet.getId();
         this.transactionType = transactionType.action;
         this.balanceBeforeTransaction = balanceBefTrans;
+        this.balanceAfterTransaction = wallet.getBalance();
+    }
+
+    public WalletHistory(Wallet wallet, TransactionType transactionType) {
+        this.walletId = wallet.getId();
+        this.transactionType = transactionType.action;
+        this.balanceBeforeTransaction = 0L;
         this.balanceAfterTransaction = wallet.getBalance();
     }
 }

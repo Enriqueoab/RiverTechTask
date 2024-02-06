@@ -21,6 +21,9 @@ public class BetForm {
     private int betNum;
 
     @NotNull
+    private Long gameId;
+
+    @NotNull
     private Long betAmount;
 
 }

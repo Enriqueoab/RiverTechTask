@@ -1,13 +1,14 @@
 package com.rivertech.betgametask.player.service;
 
-import com.rivertech.betgametask.player.Player;
-import com.rivertech.betgametask.player.RegistrationForm;
-import com.rivertech.betgametask.utils.exception.PlayerRequestException;
-import com.rivertech.betgametask.utils.exception.NotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import com.rivertech.betgametask.player.Player;
+import com.rivertech.betgametask.wallet.Wallet;
+import com.rivertech.betgametask.player.RegistrationForm;
+import com.rivertech.betgametask.player.LeaderboardProjection;
+import org.springframework.transaction.annotation.Transactional;
+import com.rivertech.betgametask.utils.exception.NotFoundException;
+import com.rivertech.betgametask.utils.exception.PlayerRequestException;
+
 
 public interface PlayerService {
     @Transactional
@@ -17,7 +18,7 @@ public interface PlayerService {
 
     Player registerPlayer(RegistrationForm register) throws PlayerRequestException;
 
-    boolean existsByUserName(String userName);
+    void updateBalance(Wallet wallet, Long betAmount, boolean isDeduct);
 
-
+    List<LeaderboardProjection> getLeaderBoard();
 }

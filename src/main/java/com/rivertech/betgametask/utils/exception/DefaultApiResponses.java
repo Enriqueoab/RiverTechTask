@@ -1,4 +1,4 @@
-package com.rivertech.betgametask.utils;
+package com.rivertech.betgametask.utils.exception;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;

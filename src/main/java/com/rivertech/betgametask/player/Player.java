@@ -1,51 +1,37 @@
 package com.rivertech.betgametask.player;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rivertech.betgametask.wallet.WalletHistory;
-import com.rivertech.betgametask.wallet.service.WalletJpaListener;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import lombok.AccessLevel;
 import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import lombok.Setter;
 import java.util.List;
-import java.util.Set;
-import lombok.Builder;
-
+import java.io.Serial;
+import lombok.AccessLevel;
+import java.io.Serializable;
+import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
-
-
-import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import com.rivertech.betgametask.bet.Bet;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.wallet.Wallet;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
-//@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "User of the game application")
-@EntityListeners(WalletJpaListener.class)
 public class Player  implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -3095287111893006464L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -56,7 +42,7 @@ public class Player  implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    @Schema(description = "Bets that belongs to / made by  the player", nullable = true)
+    @Schema(description = "Bets made by the player", nullable = true)
     private List<Bet> bets;
 
     @JsonIgnore

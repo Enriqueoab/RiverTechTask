@@ -1,9 +1,9 @@
 package com.rivertech.betgametask.player.repository;
 
+import java.util.List;
 import com.rivertech.betgametask.player.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
+import com.rivertech.betgametask.player.LeaderboardProjection;
 
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
@@ -11,6 +11,6 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
 
     boolean existsByUserName(String userName);
 
-    Player findByWalletId(int walletId);
+    List<LeaderboardProjection> findAllByBetsNotEmpty();
 
 }

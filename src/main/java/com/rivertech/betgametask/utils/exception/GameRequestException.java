@@ -4,13 +4,13 @@ import java.io.Serial;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class NotFoundException extends RiverTechGameException {
+@ResponseStatus(code = HttpStatus.GONE)
+public class GameRequestException extends RiverTechGameException {
 
     @Serial
     private static final long serialVersionUID = 1453316100622498951L;
 
-    public NotFoundException(String message) {
+    public GameRequestException(String message) {
         super(message);
     }
 }

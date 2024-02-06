@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BetHistoryRepository  extends JpaRepository<BetHistory, Long> {
     Page<BetHistory> findAllByPlayerId(Long id, Pageable pageable);
 
-    //@Query(value = "SELECT u FROM User AS u WHERE u.id = ?1")
     Page<BetHistory> findAllByPlayerIdAndGameResultNotNull(Long playerId, Pageable pageable);
 }

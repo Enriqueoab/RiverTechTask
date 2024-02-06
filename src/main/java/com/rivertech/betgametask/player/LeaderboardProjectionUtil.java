@@ -1,7 +1,8 @@
 package com.rivertech.betgametask.player;
 
+import java.util.Map;
 import java.util.List;
-import java.util.Comparator;
+import java.util.stream.Collectors;
 import com.rivertech.betgametask.bet.Bet;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,19 @@ import org.springframework.stereotype.Component;
 public class LeaderboardProjectionUtil {
 
     public List<Bet> orderByWonBets(final List<Bet> bets) {
-        return bets.stream().sorted(Comparator.comparing(Bet::getBetResult)).toList();
+
+        Map<Player, Long> totalWonAmountByPlayer = bets.stream()
+                .collect(Collectors.groupingBy(Bet::getPlayer,
+                        Collectors.summingLong(Bet::getWonAmount)));
+
+        return totalWonAmountByPlayer.entrySet().stream()
+                .map(entry -> {
+                    Bet bet = new Bet();
+                    bet.setPlayer(entry.getKey());
+                    bet.setWonAmount(entry.getValue());
+                    return bet;
+                })
+                .toList();
     }
 
 }

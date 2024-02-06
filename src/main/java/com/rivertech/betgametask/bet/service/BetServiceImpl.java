@@ -1,33 +1,57 @@
 package com.rivertech.betgametask.bet.service;
 
-import com.rivertech.betgametask.bet.Bet;
-import com.rivertech.betgametask.bet.BetForm;
-import com.rivertech.betgametask.bet.BetHistory;
-import com.rivertech.betgametask.bet.BetResult;
-import com.rivertech.betgametask.bet.repository.BetRepository;
-import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.player.service.PlayerService;
-import com.rivertech.betgametask.utils.exception.NotFoundException;
-import com.rivertech.betgametask.wallet.service.WalletService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import lombok.extern.slf4j.Slf4j;
-
+import java.util.List;
 import java.time.Instant;
+
+import com.rivertech.betgametask.utils.exception.WalletRequestException;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import com.rivertech.betgametask.bet.Bet;
+import com.rivertech.betgametask.game.Game;
+import com.rivertech.betgametask.bet.BetForm;
+import org.springframework.stereotype.Service;
+import com.rivertech.betgametask.bet.BetResult;
+import com.rivertech.betgametask.game.service.GameService;
+import com.rivertech.betgametask.player.service.PlayerService;
+import com.rivertech.betgametask.bet.repository.BetRepository;
+import com.rivertech.betgametask.wallet.service.WalletService;
+import org.springframework.transaction.annotation.Transactional;
+import com.rivertech.betgametask.utils.exception.NotFoundException;
+import com.rivertech.betgametask.utils.exception.GameRequestException;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class BetServiceImpl implements BetService {
 
-    private final static boolean ADD_AMOUNT = false;
     private final static boolean DEDUCT_AMOUNT = true;
 
+    private final GameService gameService;
     private final BetRepository betRepository;
     private final PlayerService playerService;
     private final WalletService walletService;
     private final BetHistoryService betHistoryService;
+
+    @Override
+    @Transactional
+    public Game placeBet(BetForm betForm) throws NotFoundException, GameRequestException, WalletRequestException {
+        var game = gameService.findById(betForm.getGameId());
+        if (game.getGameResult() != null) {
+            log.warn("The game with ID: {}, was already executed...",game.getId());
+            throw new GameRequestException("Game executed, not accepting more bets");
+        }
+        log.info("Placing bet for game id: {} and player {}...",betForm.getGameId(), betForm.getPlayerUserName());
+
+        var bet = toBet(betForm, game);
+        if (bet.getPlayer().getWallet().getBalance() - betForm.getBetAmount() < 0) {
+            throw new WalletRequestException("Your wallet balance is insufficient...");
+        }
+        playerService.updateBalance(bet.getPlayer().getWallet(), betForm.getBetAmount(), DEDUCT_AMOUNT);
+        bet = save(bet);
+        betHistoryService.generateBetHistoryRecords(List.of(bet));
+        game.getBets().add(bet);
+        return gameService.save(game);
+    }
 
     @Transactional
     public Bet save(Bet bet) {
@@ -44,12 +68,6 @@ public class BetServiceImpl implements BetService {
                 .betAmount(betForm.getBetAmount())
                 .placedAt(Instant.now())
                 .build();
-    }
-
-    public BetHistory getBetResults(String userName) throws NotFoundException {
-        var player = playerService.findByUserName(userName);
-        var bets = player.getBets();
-        return  null;
     }
 
     @Override
