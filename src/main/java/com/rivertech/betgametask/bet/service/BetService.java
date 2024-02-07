@@ -1,11 +1,15 @@
 package com.rivertech.betgametask.bet.service;
 
 import com.rivertech.betgametask.bet.Bet;
+import com.rivertech.betgametask.bet.BetHistory;
+import com.rivertech.betgametask.bet.BetHistoryForm;
 import com.rivertech.betgametask.game.Game;
 import com.rivertech.betgametask.bet.BetForm;
 import com.rivertech.betgametask.utils.exception.GameRequestException;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 import com.rivertech.betgametask.utils.exception.WalletRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BetService {
 
@@ -13,7 +17,7 @@ public interface BetService {
 
     Bet toBet(BetForm betForm, Game game) throws NotFoundException;
 
-    Bet save(Bet bet);
+    Game priceBetCalculator(Game game) throws NotFoundException;
 
-    void priceBetCalculator(Game game) throws NotFoundException;
+    Page<BetHistory> retrieveBetResults(BetHistoryForm betHistoryForm, Pageable pageable) throws NotFoundException;
 }

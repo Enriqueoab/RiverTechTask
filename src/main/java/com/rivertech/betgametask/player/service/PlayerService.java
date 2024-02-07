@@ -1,6 +1,8 @@
 package com.rivertech.betgametask.player.service;
 
 import java.util.List;
+
+import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.player.Player;
 import com.rivertech.betgametask.player.RegistrationForm;
 import com.rivertech.betgametask.player.LeaderboardProjection;
@@ -18,4 +20,6 @@ public interface PlayerService {
     void updateBalance(Player player, Long betAmount, boolean isDeduct);
 
     List<LeaderboardProjection> getLeaderBoard();
+
+    void updateBalanceByBetWonAmount(List<Bet> bets);
 }

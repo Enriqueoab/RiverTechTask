@@ -18,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -37,6 +38,7 @@ public class Game implements Serializable {
     private String description;
 
     @JsonIgnore
+    @ToString.Exclude
     @Schema(description = "Bets related to a game")
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Bet> bets;
@@ -46,10 +48,10 @@ public class Game implements Serializable {
 
     private Integer gameResult;
 
-    public Game play(Game game) {
+    public Game play() {
         Random rand = new Random();
-        game.setGameResult(rand.nextInt(1,11));
-        game.setExecutedAt(Instant.now());
-    return game;
+        this.setGameResult(rand.nextInt(1,11));
+        this.setExecutedAt(Instant.now());
+    return this;
     }
 }

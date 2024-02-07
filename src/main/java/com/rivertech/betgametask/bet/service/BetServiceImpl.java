@@ -2,18 +2,20 @@ package com.rivertech.betgametask.bet.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+
+import com.rivertech.betgametask.bet.BetHistoryForm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.game.Game;
 import com.rivertech.betgametask.bet.BetForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.rivertech.betgametask.bet.BetResult;
 import com.rivertech.betgametask.bet.BetHistory;
 import com.rivertech.betgametask.game.service.GameService;
 import com.rivertech.betgametask.player.service.PlayerService;
-import com.rivertech.betgametask.bet.repository.BetRepository;
-import com.rivertech.betgametask.wallet.service.WalletService;
 import org.springframework.transaction.annotation.Transactional;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 import com.rivertech.betgametask.utils.exception.GameRequestException;
@@ -27,9 +29,7 @@ public class BetServiceImpl implements BetService {
     private final static boolean DEDUCT_AMOUNT = true;
 
     private final GameService gameService;
-    private final BetRepository betRepository;
     private final PlayerService playerService;
-    private final WalletService walletService;
     private final BetHistoryService betHistoryService;
 
     @Override
@@ -46,13 +46,8 @@ public class BetServiceImpl implements BetService {
         log.info("Placing bet for game id: {} and player {}...",betForm.getGameId(), betForm.getPlayerUserName());
 
         var bet = toBet(betForm, game);
-        playerService.updateBalance(player, betForm.getBetAmount(), DEDUCT_AMOUNT);;
+        playerService.updateBalance(player, betForm.getBetAmount(), DEDUCT_AMOUNT);
         return gameService.addBetToGame(bet, game);
-    }
-
-    @Transactional
-    public Bet save(Bet bet) {
-        return betRepository.save(bet);
     }
 
     @Override
@@ -72,7 +67,7 @@ public class BetServiceImpl implements BetService {
 
     @Override
     @Transactional
-    public void priceBetCalculator(Game game) {
+    public Game priceBetCalculator(Game game) {
         log.info("Calculating bet price of game {}, with ID:{}...", game.getDescription(), game.getId());
         var bets = game.getBets().stream()
                 .map(bet -> {
@@ -86,7 +81,14 @@ public class BetServiceImpl implements BetService {
                     return bet;
                 })
                 .toList();
-        walletService.updateBalanceByBetWonAmount(bets);
+        playerService.updateBalanceByBetWonAmount(bets);
+        return game;
+    }
+
+    @Override
+    public Page<BetHistory> retrieveBetResults(BetHistoryForm betForm, Pageable pageable) throws NotFoundException {
+        var player = playerService.findByUserName(betForm.getPlayerUserName());
+        return betHistoryService.retrieveBetResults(player, betForm.isJustExecutedBets(),pageable);
     }
 
     private BetResult betResultSetter(int gameResult, int betNum) {
