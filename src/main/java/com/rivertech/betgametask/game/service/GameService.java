@@ -1,8 +1,9 @@
 package com.rivertech.betgametask.game.service;
 
+import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.utils.exception.GameRequestException;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
+import com.rivertech.betgametask.utils.exception.GameRequestException;
 
 public interface GameService {
 
@@ -11,4 +12,6 @@ public interface GameService {
     Game findById(Long gameId) throws NotFoundException;
 
     Game executeGame(Long gameId) throws NotFoundException, GameRequestException;
+
+    Game addBetToGame(Bet bet, Game game);
 }

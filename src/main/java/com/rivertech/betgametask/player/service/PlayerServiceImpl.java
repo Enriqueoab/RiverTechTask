@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.rivertech.betgametask.player.Player;
-import com.rivertech.betgametask.wallet.Wallet;
 import com.rivertech.betgametask.player.RegistrationForm;
 import com.rivertech.betgametask.wallet.service.WalletService;
 import com.rivertech.betgametask.player.LeaderboardProjection;
@@ -28,14 +27,14 @@ public class PlayerServiceImpl implements PlayerService {
         if (playerRepo.existsByUserName(register.getUserName())){
             throw new PlayerRequestException("The user name has to be unique, user name already in DB...");
         }
-        var player = new Player(register.getName(), register.getSurname(),register.getUserName(), new Wallet());
-
+        var player = new Player(register.getName(), register.getSurname(),register.getUserName());
         return save(player);
     }
     @Override
     @Transactional
-    public void updateBalance(Wallet wallet, Long betAmount, boolean isDeduct) {
-        walletService.updateBalance(wallet, betAmount, isDeduct);
+    public void updateBalance(Player player, Long betAmount, boolean isDeduct) {
+       walletService.updateBalance(player.getWallet(), betAmount, isDeduct);
+       save(player);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     @Transactional
     public Player save(Player player) {
-        log.info("Storing player  ->  user name: {}, wallet ID: {}", player.getUserName(), player.getWallet().getId());
+        log.info("Saving player  ->  user name: {}", player.getUserName());
         return playerRepo.save(player);
     }
 

@@ -9,7 +9,7 @@ import com.rivertech.betgametask.bet.BetHistoryForm;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 public interface BetHistoryService {
 
-    void generateBetHistoryRecords(List<Bet> bets);
+    List<BetHistory> generateBetHistoryRecord(Bet bet);
 
     Page<BetHistory> retrieveBetResults(BetHistoryForm BetHisForm, Pageable pageable) throws NotFoundException;
 }

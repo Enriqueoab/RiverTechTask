@@ -6,7 +6,7 @@ import com.rivertech.betgametask.wallet.Wallet;
 
 public interface WalletService {
 
-    void updateBalance(Wallet wallet, Long betAmount, boolean isDeduct);
+    Wallet updateBalance(Wallet wallet, Long betAmount, boolean isDeduct);
 
     void updateBalanceByBetWonAmount(List<Bet> bets);
 

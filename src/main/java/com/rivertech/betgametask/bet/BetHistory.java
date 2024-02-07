@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import com.rivertech.betgametask.game.Game;
 import com.rivertech.betgametask.player.Player;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 
 @Data
@@ -51,5 +52,9 @@ public class BetHistory {
     @Schema(description = "Bet result, calculated by how close the bet against the game result was",
             nullable = true, example = "SECOND_PRICE", allowableValues = {"FIRST_PRICE","SECOND_PRICE","THIRD_PRICE","LOST"})
     private String betResultMessage;
+
+    @ManyToOne
+    @JsonIgnore
+    private Bet bet;
 
 }

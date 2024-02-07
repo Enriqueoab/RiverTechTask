@@ -37,12 +37,10 @@ public class BetHistoryServiceImpl implements BetHistoryService {
                 .toList();
     }
 
-    @Override
     @Transactional
-    public void generateBetHistoryRecords(List<Bet> bets) {
+    public List<BetHistory> generateBetHistoryRecord(Bet bet) {
         log.info("Generating bet history records...");
-        var BetHistories = createBetHistoryRecords(bets);
-        betHistoryRepository.saveAll(BetHistories);
+        return createBetHistoryRecords(List.of(bet));
     }
 
     @Override

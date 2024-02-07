@@ -7,9 +7,11 @@ import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
@@ -29,19 +31,21 @@ public class WalletHistory implements Serializable {
 
     private Long balanceAfterTransaction;
 
-    private Long walletId;
-
     private String transactionType;
 
+    @ManyToOne
+    @JsonIgnore
+    private Wallet wallet;
+
     public WalletHistory(Wallet wallet, Long balanceBefTrans, TransactionType transactionType) {
-        this.walletId = wallet.getId();
+        this.wallet = wallet;
         this.transactionType = transactionType.action;
         this.balanceBeforeTransaction = balanceBefTrans;
         this.balanceAfterTransaction = wallet.getBalance();
     }
 
     public WalletHistory(Wallet wallet, TransactionType transactionType) {
-        this.walletId = wallet.getId();
+        this.wallet = wallet;
         this.transactionType = transactionType.action;
         this.balanceBeforeTransaction = 0L;
         this.balanceAfterTransaction = wallet.getBalance();

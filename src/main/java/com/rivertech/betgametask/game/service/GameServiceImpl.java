@@ -1,6 +1,7 @@
 package com.rivertech.betgametask.game.service;
 
 import lombok.extern.slf4j.Slf4j;
+import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +37,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    @Transactional
     public Game executeGame(Long gameId) throws NotFoundException, GameRequestException {
         log.info("Executing game with ID: {}...",gameId);
         var game = gameRepo.findById(gameId).orElseThrow(() -> new NotFoundException("Game Not Found"));
@@ -43,8 +45,14 @@ public class GameServiceImpl implements GameService {
             log.warn("The game with ID: {}, was already executed...",game.getId());
             throw new GameRequestException("Game already executed, not accepting more bets");
         }
-        gameRepo.saveAndFlush(game.play(game));
-        betService.priceBetCalculator(game);
-        return game;
+        betService.priceBetCalculator(game.play(game));
+        return save(game);
+    }
+
+    @Override
+    @Transactional
+    public Game addBetToGame(Bet bet, Game game) {
+        game.getBets().add(bet);
+        return save(game);
     }
 }
