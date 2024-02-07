@@ -1,11 +1,15 @@
 package com.rivertech.betgametask.bet;
 
 import lombok.Data;
+import lombok.Setter;
 import java.io.Serial;
 import lombok.Builder;
-import lombok.ToString;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
 import java.time.Instant;
 import java.io.Serializable;
+import java.util.List;
 import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -40,12 +44,10 @@ public class Bet implements Serializable {
 
     @ManyToOne
     @JsonIgnore
-    @ToString.Exclude
     @Schema(description = "Game related to a specific bet")
     private Game game;
 
     @ManyToOne
-    @ToString.Exclude
     @Schema(description = "Player that made the bet")
     private Player player;
 
@@ -55,5 +57,10 @@ public class Bet implements Serializable {
     @Schema(description = "Bet result, calculated by how close the bet against the game result was",
             nullable = true, example = "SECOND_PRICE", allowableValues = {"FIRST_PRICE", "SECOND_PRICE", "THIRD_PRICE", "LOST"})
     private BetResult betResult;
+
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "bet", cascade = CascadeType.ALL)
+    private List<BetHistory> betHistory;
 
 }

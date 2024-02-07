@@ -16,8 +16,9 @@ import jakarta.persistence.CascadeType;
 import com.rivertech.betgametask.bet.Bet;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Entity
 @Builder
@@ -37,7 +38,7 @@ public class Game implements Serializable {
 
     @JsonIgnore
     @Schema(description = "Bets related to a game")
-    @OneToMany(mappedBy = "game", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Bet> bets;
 
     @Schema(description = "Time when the game was played")
