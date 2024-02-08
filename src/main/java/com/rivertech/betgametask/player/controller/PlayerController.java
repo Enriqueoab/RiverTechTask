@@ -1,5 +1,6 @@
 package com.rivertech.betgametask.player.controller;
 
+import java.util.List;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,14 +10,12 @@ import com.rivertech.betgametask.player.RegistrationForm;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.rivertech.betgametask.utils.exception.DefaultApiResponses;
 import com.rivertech.betgametask.player.service.PlayerService;
 import com.rivertech.betgametask.player.LeaderboardProjection;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.rivertech.betgametask.utils.exception.DefaultApiResponses;
 import com.rivertech.betgametask.utils.exception.PlayerRequestException;
-
-import java.util.List;
 
 @RestController
 @Tag(name = "Player")
@@ -27,9 +26,9 @@ class PlayerController {
     private final PlayerService playerService;
 
     @DefaultApiResponses
-    @Operation(summary = "Place a bet")
+    @Operation(summary = "Register a new player")
     @PostMapping(path = "/register")
-    public Player playerRegistration(@Valid @RequestBody RegistrationForm register) throws PlayerRequestException {
+    public Player registerPlayer(@Valid @RequestBody RegistrationForm register) throws PlayerRequestException {
         return playerService.registerPlayer(register);
     }
 

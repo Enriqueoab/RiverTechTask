@@ -31,7 +31,6 @@ public class GameControllerTests extends TestUtils {
         Mockito.verify(gameService).executeGame(game.getId());
     }
 
-
     @Test
     public void executeGame_NotFoundException() throws GameRequestException, NotFoundException {
 

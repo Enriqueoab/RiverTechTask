@@ -21,9 +21,8 @@ public class BetHistoryServiceImpl implements BetHistoryService {
 
     private final BetHistoryRepository betHistoryRepository;
 
-    public List<BetHistory> createBetHistoryRecords(List<Bet> bets) {
-        return bets.stream()
-                .map(bet -> BetHistory.builder()
+    public BetHistory createBetHistoryRecords(Bet bet) {
+        return BetHistory.builder()
                         .game(bet.getGame())
                         .player(bet.getPlayer())
                         .betNum(bet.getBetNum())
@@ -32,14 +31,13 @@ public class BetHistoryServiceImpl implements BetHistoryService {
                         .executedAt(bet.getGame().getExecutedAt())
                         .betResultMessage(bet.getBetResult() == null ? null : bet.getBetResult().message)
                         .playerUserName(bet.getPlayer().getUserName())
-                        .build())
-                .toList();
+                        .build();
     }
 
     @Transactional
-    public List<BetHistory> generateBetHistoryRecord(Bet bet) {
+    public BetHistory generateBetHistoryRecord(Bet bet) {
         log.info("Generating bet history records...");
-        return createBetHistoryRecords(List.of(bet));
+        return createBetHistoryRecords(bet);
     }
 
     @Override

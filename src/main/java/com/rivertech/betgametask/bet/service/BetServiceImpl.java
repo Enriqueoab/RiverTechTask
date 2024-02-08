@@ -3,6 +3,7 @@ package com.rivertech.betgametask.bet.service;
 import java.time.Instant;
 import java.util.ArrayList;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.game.Game;
@@ -23,6 +24,7 @@ import com.rivertech.betgametask.utils.exception.WalletRequestException;
 
 @Slf4j
 @Service
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class BetServiceImpl implements BetService {
 
@@ -58,7 +60,7 @@ public class BetServiceImpl implements BetService {
                 .placedAt(Instant.now())
                 .build();
 
-        bet.getBetHistory().add(betHistoryService.generateBetHistoryRecord(bet).get(0));
+        bet.getBetHistory().add(betHistoryService.generateBetHistoryRecord(bet));
         return bet;
     }
 
@@ -74,7 +76,7 @@ public class BetServiceImpl implements BetService {
                     var betPrice = betResult.calculatePrice(bet.getBetAmount());
                     bet.setWonAmount(betPrice);
 
-                    bet.getBetHistory().add(betHistoryService.generateBetHistoryRecord(bet).get(0));
+                    bet.getBetHistory().add(betHistoryService.generateBetHistoryRecord(bet));
                     return bet;
                 })
                 .toList();
@@ -89,7 +91,7 @@ public class BetServiceImpl implements BetService {
         return betHistoryService.retrieveBetResults(player, betForm.isJustExecutedBets(),pageable);
     }
 
-    private BetResult betResultSetter(int gameResult, int betNum) {
+    protected BetResult betResultSetter(int gameResult, int betNum) {
 
         var difference = Math.abs(betNum - gameResult);
         BetResult betResult;

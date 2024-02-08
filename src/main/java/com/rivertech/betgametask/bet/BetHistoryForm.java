@@ -16,4 +16,8 @@ public class BetHistoryForm {
     @Schema(description = "Filter to retrieve just the bets linked to games already played", nullable = true)
     private boolean justExecutedBets;
 
+    public BetHistoryForm(String playerUserName, boolean justExecutedBets) {
+        this.playerUserName = playerUserName;
+        this.justExecutedBets = justExecutedBets;
+    }
 }
