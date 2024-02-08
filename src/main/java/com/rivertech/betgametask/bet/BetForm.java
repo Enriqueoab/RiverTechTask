@@ -26,4 +26,10 @@ public class BetForm {
     @NotNull
     private Long betAmount;
 
+    public BetForm(String playerUserName, int betNum, Long gameId, Long betAmount) {
+        this.playerUserName = playerUserName;
+        this.betNum = betNum;
+        this.gameId = gameId;
+        this.betAmount = betAmount;
+    }
 }

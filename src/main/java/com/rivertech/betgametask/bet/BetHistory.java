@@ -28,12 +28,13 @@ public class BetHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Game related to a specific bet")
     @ManyToOne
+    @JsonIgnore
+    @Schema(description = "Game related to a specific bet")
     private Game game;
 
-    @Schema(description = "Player that made the bet")
     @ManyToOne
+    @Schema(description = "Player that made the bet")
     private Player player;
 
     private int betNum;
