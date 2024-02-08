@@ -1,23 +1,23 @@
 package com.rivertech.betgametask;
 
 import com.rivertech.betgametask.bet.Bet;
-import com.rivertech.betgametask.bet.BetResult;
+import com.rivertech.betgametask.bet.BetForm;
+import com.rivertech.betgametask.bet.BetHistory;
 import com.rivertech.betgametask.game.Game;
 import com.rivertech.betgametask.player.Player;
-import com.rivertech.betgametask.wallet.Wallet;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.time.Instant;
-import java.util.List;
+import java.util.ArrayList;
 
 public abstract class TestUtils {
 
     protected static final Long NON_EXISTING_GAME_ID = 33L;
+    protected static final int GOOD_BETTING_NUM = 7;
 
+    protected BetHistory betHistory;
+
+    protected BetForm betForm;
 
     protected Player player;
-
-    protected Wallet wallet;
 
     protected Game game;
 
@@ -29,13 +29,7 @@ public abstract class TestUtils {
         game = Game.builder()
                 .id(1L)
                 .description("Testing Game")
-//                .bets(someListOfBets)
-//                .executedAt(Instant.now())
-//                .gameResult(1)
-                .build();
-
-        wallet = Wallet.builder()
-                .id(1L)
+                .bets(new ArrayList<>())
                 .build();
 
         player = new Player("Alma", "Test lady", "Tester");
@@ -43,15 +37,22 @@ public abstract class TestUtils {
         bet = Bet.builder()
                 .id(1L)
                 .betAmount(100L)
-//                .wonAmount(0L)
                 .betNum(1)
-                .game(game)
                 .player(player)
-//                .placedAt(Instant.now())
-//                .betResult(BetResult.WIN_5X)
+                .betHistory(new ArrayList<BetHistory>())
                 .build();
 
-        game.setBets(List.of(bet));
+        betForm = new BetForm(player.getName(), GOOD_BETTING_NUM, game.getId(), 250L);
+
+        betHistory = BetHistory.builder()
+                        .game(bet.getGame())
+                        .player(bet.getPlayer())
+                        .betNum(bet.getBetNum())
+                        .placedAt(bet.getPlacedAt())
+                        .betResultMessage(bet.getBetResult() == null ? null : bet.getBetResult().message)
+                        .playerUserName(bet.getPlayer().getUserName())
+                        .build();
+
     }
 
 }

@@ -31,9 +31,23 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    @Transactional
     public Game findById(Long gameId) throws NotFoundException {
         return gameRepo.findById(gameId).orElseThrow (
                 () -> new NotFoundException("Game by ID not found"));
+    }
+
+    @Override
+    @Transactional
+    public Game findByIdAndNotExecuted(Long gameId) throws NotFoundException, GameRequestException {
+        var game = gameRepo.findById(gameId).orElseThrow (
+                () -> new NotFoundException("Game by ID not found"));
+
+        if (game.getExecutedAt() != null) {
+            log.warn("The game with ID: {}, was already executed...",game.getId());
+            throw new GameRequestException("Game executed, not accepting more bets");
+        }
+        return game;
     }
 
     @Override

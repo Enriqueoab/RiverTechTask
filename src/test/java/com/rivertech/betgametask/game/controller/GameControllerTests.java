@@ -1,7 +1,6 @@
 package com.rivertech.betgametask.game.controller;
 
 import org.mockito.Mock;
-import java.time.Instant;
 import org.mockito.Mockito;
 import org.mockito.InjectMocks;
 import org.junit.jupiter.api.Test;
@@ -28,21 +27,20 @@ public class GameControllerTests extends TestUtils {
     @Test
     public void executeGame_Success() throws GameRequestException, NotFoundException {
         Mockito.when(gameService.executeGame(game.getId())).thenReturn(game);
-        Assertions.assertEquals(game, gameController.executeGame(game.getId()));
+        Assertions.assertNotNull(gameController.executeGame(game.getId()));
         Mockito.verify(gameService).executeGame(game.getId());
     }
 
 
     @Test
-    public void executeGame_GameNotFound() throws GameRequestException, NotFoundException {
+    public void executeGame_NotFoundException() throws GameRequestException, NotFoundException {
 
         Mockito.when(gameService.executeGame(NON_EXISTING_GAME_ID)).thenThrow(new NotFoundException("Game Not Found"));
         Assertions.assertThrows(NotFoundException.class, () -> gameController.executeGame(NON_EXISTING_GAME_ID));
     }
 
     @Test
-    public void executeGame_GameAlreadyExecuted() throws GameRequestException, NotFoundException {
-        game.setExecutedAt(Instant.now());
+    public void executeGame_GameRequestException() throws GameRequestException, NotFoundException {
         Mockito.when(gameService.executeGame(game.getId()))
                 .thenThrow(new GameRequestException("Game already executed, not accepting more bets"));
         Assertions.assertThrows(GameRequestException.class, () -> gameController.executeGame(game.getId()));

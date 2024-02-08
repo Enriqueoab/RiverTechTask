@@ -2,18 +2,18 @@ package com.rivertech.betgametask.bet.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
-
-import com.rivertech.betgametask.bet.BetHistoryForm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.game.Game;
-import com.rivertech.betgametask.bet.BetForm;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.rivertech.betgametask.bet.BetForm;
 import org.springframework.stereotype.Service;
 import com.rivertech.betgametask.bet.BetResult;
+import com.rivertech.betgametask.player.Player;
+import org.springframework.data.domain.Pageable;
 import com.rivertech.betgametask.bet.BetHistory;
+import com.rivertech.betgametask.bet.BetHistoryForm;
 import com.rivertech.betgametask.game.service.GameService;
 import com.rivertech.betgametask.player.service.PlayerService;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,26 +33,22 @@ public class BetServiceImpl implements BetService {
     private final BetHistoryService betHistoryService;
 
     @Override
+    @Transactional
     public Game placeBet(BetForm betForm) throws NotFoundException, GameRequestException, WalletRequestException {
         var player = playerService.findByUserName(betForm.getPlayerUserName());
-        var game = gameService.findById(betForm.getGameId());
+        var game = gameService.findByIdAndNotExecuted(betForm.getGameId());
         if (player.getWallet().getBalance() - betForm.getBetAmount() < 0) {
             throw new WalletRequestException("Your wallet balance is insufficient...");
         }
-        if (game.getExecutedAt() != null) {
-            log.warn("The game with ID: {}, was already executed...",game.getId());
-            throw new GameRequestException("Game executed, not accepting more bets");
-        }
         log.info("Placing bet for game id: {} and player {}...",betForm.getGameId(), betForm.getPlayerUserName());
 
-        var bet = toBet(betForm, game);
+        var bet = toBet(betForm, player, game);
         playerService.updateBalance(player, betForm.getBetAmount(), DEDUCT_AMOUNT);
         return gameService.addBetToGame(bet, game);
     }
 
     @Override
-    public Bet toBet(BetForm betForm, Game game) throws NotFoundException {
-        var player = playerService.findByUserName(betForm.getPlayerUserName());
+    public Bet toBet(BetForm betForm, Player player, Game game) {
         var bet =  Bet.builder()
                 .player(player)
                 .game(game)
@@ -61,6 +57,7 @@ public class BetServiceImpl implements BetService {
                 .betAmount(betForm.getBetAmount())
                 .placedAt(Instant.now())
                 .build();
+
         bet.getBetHistory().add(betHistoryService.generateBetHistoryRecord(bet).get(0));
         return bet;
     }
@@ -86,6 +83,7 @@ public class BetServiceImpl implements BetService {
     }
 
     @Override
+    @Transactional
     public Page<BetHistory> retrieveBetResults(BetHistoryForm betForm, Pageable pageable) throws NotFoundException {
         var player = playerService.findByUserName(betForm.getPlayerUserName());
         return betHistoryService.retrieveBetResults(player, betForm.isJustExecutedBets(),pageable);

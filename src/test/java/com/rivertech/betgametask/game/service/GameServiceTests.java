@@ -1,36 +1,19 @@
 package com.rivertech.betgametask.game.service;
 
+import org.mockito.Mock;
+import java.util.Optional;
+import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.TestInstance;
 import com.rivertech.betgametask.TestUtils;
-
-import com.rivertech.betgametask.bet.Bet;
-import com.rivertech.betgametask.bet.BetHistory;
-import com.rivertech.betgametask.bet.repository.BetHistoryRepository;
-import com.rivertech.betgametask.bet.service.BetHistoryService;
-import com.rivertech.betgametask.bet.service.BetHistoryServiceImpl;
-import com.rivertech.betgametask.bet.service.BetService;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import com.rivertech.betgametask.bet.service.BetServiceImpl;
 import com.rivertech.betgametask.game.repository.GameRepository;
-import com.rivertech.betgametask.utils.exception.GameRequestException;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
+import com.rivertech.betgametask.utils.exception.GameRequestException;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -42,12 +25,6 @@ public class GameServiceTests extends TestUtils {
 
     @Mock
     private BetServiceImpl betService;
-
-    @Mock
-    private BetHistoryRepository BetHistoryRepo;
-
-    @Mock
-    private BetHistoryServiceImpl betHistoryService;
 
     @Mock
     private GameRepository gameRepo;
@@ -95,14 +72,15 @@ public class GameServiceTests extends TestUtils {
 //
 //    }
 
-//
-//
-//    @Test
-//    public void executeGame_GameNotFound() throws GameRequestException, NotFoundException {
-//
-//        Mockito.when(gameService.executeGame(NON_EXISTING_GAME_ID)).thenThrow(new NotFoundException("Game Not Found"));
-//        Assertions.assertThrows(NotFoundException.class, () -> gameService.executeGame(NON_EXISTING_GAME_ID));
-//    }
+    @Test
+    public void addBetToGame_Success() {
+        Mockito.when(gameService.addBetToGame(bet, game)).thenReturn(game);
+        System.err.println("---- game.getBets() ----> "+game.getBets() );
+        var gameOldState = game;
+        Assertions.assertNotNull(game.getBets().get(0));
+        Assertions.assertNotEquals(gameOldState.getBets().size(),
+                                    gameService.addBetToGame(bet, game).getBets().size());
+    }
 //
 //    @Test
 //    public void executeGame_GameAlreadyExecuted() throws GameRequestException, NotFoundException {

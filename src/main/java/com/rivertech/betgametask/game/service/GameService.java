@@ -11,6 +11,8 @@ public interface GameService {
 
     Game findById(Long gameId) throws NotFoundException;
 
+    Game findByIdAndNotExecuted(Long gameId) throws NotFoundException, GameRequestException;
+
     Game executeGame(Long gameId) throws NotFoundException, GameRequestException;
 
     Game addBetToGame(Bet bet, Game game);
