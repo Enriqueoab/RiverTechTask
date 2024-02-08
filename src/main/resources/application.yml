@@ -4,20 +4,16 @@ server:
     include-message: always
 
 spring:
-  docker:
-    compose:
-      enabled: false
+  application:
+    name: River-Tech-task
+  profiles:
+    active:
+      - local
   h2:
     console:
       enabled: true
-  datasource:
-    url: jdbc:h2:file:./src/main/resources/db/RiverTechTaskDb
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-  batch:
-    jdbc:
-      initialize-schema: always
+      settings:
+        web-allow-others: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,3 +22,19 @@ spring:
   sql:
     init:
       mode: always
+
+# Local profile settings
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:h2:file:./src/main/resources/db/RiverTechTaskDb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    batch:
+      jdbc:
+        initialize-schema: always

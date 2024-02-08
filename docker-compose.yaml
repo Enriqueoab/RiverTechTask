@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    image: river-tech-task:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    volumes:
+      - ./data:/workspace/data
+    depends_on:
+      - db
+    networks:
+      - river-tech-network
+
+  db:
+    image: "oconnellp/h2"
+    command: >
+      sh -c "
+      java -jar /usr/share/java/h2-1.4.200.jar -web -webAllowOthers -tcp -tcpAllowOthers -baseDir /workspace/data"
+    ports:
+      - "8082:8082"
+    networks:
+      - river-tech-network
+
+networks:
+  river-tech-network:
+    driver: bridge

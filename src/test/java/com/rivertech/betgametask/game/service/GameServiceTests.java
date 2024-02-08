@@ -68,22 +68,33 @@ public class GameServiceTests extends TestUtils {
 
     @Test
     public void executeGame_Success() throws GameRequestException, NotFoundException {
-        Mockito.lenient().when(gameRepo.findById(game.getId())).thenReturn(Optional.ofNullable(game));
-//        Mockito.when(gameService.executeGame(game.getId())).thenReturn(game);
+        Mockito.when(gameRepo.findById(game.getId())).thenReturn(Optional.ofNullable(game));
         Mockito.lenient().when(gameService.executeGame(game.getId())).thenReturn(game);
-//        Mockito.doReturn(game).when(gameRepo.save(game));
-        Mockito.lenient().when(betService.priceBetCalculator(game)).thenReturn(game);
-//        Mockito.when(betService.priceBetCalculator(game)).thenReturn(game);
-//        Mockito.when(betHistoryService.generateBetHistoryRecord(bet)).thenReturn(Arrays.asList(new BetHistory()));
-        System.err.println("---- game.getGameResult() ----> "+game.getGameResult() );
-//        Mockito.when(gameService.executeGame(game.getId()))
-//                .thenThrow(new GameRequestException("Game already executed, not accepting more bets"));
-//        Assertions.assertThrows(GameRequestException.class, () -> gameService.executeGame(game.getId()));
 
         Assertions.assertNotNull(game.getExecutedAt());
         Assertions.assertNotNull(game.getGameResult());
         Mockito.verify(betService).priceBetCalculator(game);
     }
+
+//    @Test
+//    public void executeGame_NotFoundException() throws GameRequestException, NotFoundException {
+//
+//        Mockito.when(gameService.executeGame(NON_EXISTING_GAME_ID)).thenThrow(new NotFoundException("Game Not Found"));
+//        Assertions.assertThrows(NotFoundException.class, () -> gameService.executeGame(NON_EXISTING_GAME_ID));
+
+//        Mockito.when(gameRepo.findById(game.getId())).thenReturn(Optional.ofNullable(game));
+//        Mockito.when(gameService.executeGame(game.getId())).thenReturn(game);
+//        Mockito.doReturn(game).when(gameRepo.save(game));
+//        Mockito.lenient().when(betService.priceBetCalculator(game)).thenReturn(game);
+//        Mockito.when(betService.priceBetCalculator(game)).thenReturn(game);
+//        Mockito.when(betHistoryService.generateBetHistoryRecord(bet)).thenReturn(Arrays.asList(new BetHistory()));
+//        System.err.println("---- game.getGameResult() ----> "+game.getGameResult() );
+//        Mockito.when(gameService.executeGame(NON_EXISTING_GAME_ID))
+//                .thenThrow(new NotFoundException("Game already executed, not accepting more bets"));
+//        Assertions.assertThrows(GameRequestException.class, () -> gameService.executeGame(NON_EXISTING_GAME_ID));
+//
+//    }
+
 //
 //
 //    @Test
