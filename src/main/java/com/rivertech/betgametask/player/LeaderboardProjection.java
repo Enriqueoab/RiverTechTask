@@ -12,4 +12,10 @@ public interface LeaderboardProjection {
     @Value("#{@leaderboardProjectionUtil.orderByWonBets(target.bets)}")
     List<BetProjection> getBets();
 
+    String setName(String name);
+
+    String setUserName(String userName);
+
+    List<BetProjection> setBets(List<BetProjection> betProj);
+
 }

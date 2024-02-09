@@ -12,6 +12,7 @@ public class LeaderboardProjectionUtil {
     public List<Bet> orderByWonBets(final List<Bet> bets) {
 
         Map<Player, Long> totalWonAmountByPlayer = bets.stream()
+                .filter(bet -> bet.getWonAmount() != null)
                 .collect(Collectors.groupingBy(Bet::getPlayer,
                         Collectors.summingLong(Bet::getWonAmount)));
 

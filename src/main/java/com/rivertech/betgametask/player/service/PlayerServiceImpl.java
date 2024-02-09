@@ -1,6 +1,8 @@
 package com.rivertech.betgametask.player.service;
 
 import java.util.List;
+
+import com.rivertech.betgametask.utils.exception.LeaderBoardRequestException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
 import com.rivertech.betgametask.bet.Bet;
@@ -39,8 +41,14 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<LeaderboardProjection> getLeaderBoard() {
-        return playerRepo.findAllByBetsNotEmpty();
+    public List<LeaderboardProjection> getLeaderBoard() throws LeaderBoardRequestException {
+        log.info("Generating leader board...");
+        var leaders = playerRepo.findAllByBetsNotEmpty();
+        if (leaders.isEmpty()) {
+            throw new LeaderBoardRequestException("There are no Games/bets executed to calculate it yet");
+        }
+
+        return leaders;
     }
 
     @Override

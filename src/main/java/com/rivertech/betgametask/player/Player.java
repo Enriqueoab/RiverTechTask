@@ -1,9 +1,10 @@
 package com.rivertech.betgametask.player;
 
-import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 import java.util.List;
 import java.io.Serial;
+import lombok.AccessLevel;
 import java.io.Serializable;
 import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,6 @@ import jakarta.persistence.GenerationType;
 import com.rivertech.betgametask.wallet.Wallet;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Setter;
 
 @Data
 @Entity

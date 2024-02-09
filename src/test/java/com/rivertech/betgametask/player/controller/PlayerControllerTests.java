@@ -1,5 +1,6 @@
 package com.rivertech.betgametask.player.controller;
 
+import com.rivertech.betgametask.utils.exception.LeaderBoardRequestException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class PlayerControllerTests extends TestUtils {
     }
 
     @Test
-    void getLeaderBoard_PlayerRequestException() {
+    void getLeaderBoard_PlayerRequestException() throws LeaderBoardRequestException {
 
         var expectedLeaderboard = new ArrayList<LeaderboardProjection>();
         Mockito.when(playerService.getLeaderBoard()).thenReturn(expectedLeaderboard);

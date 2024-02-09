@@ -6,6 +6,7 @@ import com.rivertech.betgametask.bet.Bet;
 import com.rivertech.betgametask.player.Player;
 import com.rivertech.betgametask.player.RegistrationForm;
 import com.rivertech.betgametask.player.LeaderboardProjection;
+import com.rivertech.betgametask.utils.exception.LeaderBoardRequestException;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 import com.rivertech.betgametask.utils.exception.PlayerRequestException;
 
@@ -19,7 +20,7 @@ public interface PlayerService {
 
     void updateBalance(Player player, Long betAmount, boolean isDeduct);
 
-    List<LeaderboardProjection> getLeaderBoard();
+    List<LeaderboardProjection> getLeaderBoard() throws LeaderBoardRequestException;
 
     void updateBalanceByBetWonAmount(List<Bet> bets);
 }

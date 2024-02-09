@@ -1,8 +1,12 @@
 package com.rivertech.betgametask.player.service;
 
+import com.rivertech.betgametask.player.BetProjection;
+import com.rivertech.betgametask.utils.exception.LeaderBoardRequestException;
 import org.mockito.Mock;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.mockito.Mockito;
 import org.mockito.InjectMocks;
 import org.junit.jupiter.api.Test;
@@ -16,6 +20,7 @@ import com.rivertech.betgametask.player.LeaderboardProjection;
 import com.rivertech.betgametask.utils.exception.NotFoundException;
 import com.rivertech.betgametask.player.repository.PlayerRepository;
 import com.rivertech.betgametask.utils.exception.PlayerRequestException;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -66,13 +71,38 @@ public class PlayerServiceTests extends TestUtils {
     }
 
     @Test
-    void getLeaderBoard_Success() {
+    void getLeaderBoard_Success() throws LeaderBoardRequestException {
         var leaderboard = new ArrayList<LeaderboardProjection>();
+
+        var factory = new SpelAwareProxyProjectionFactory();
+        // Projections "Constructors"
+        var leaderboardProj = factory.createProjection(LeaderboardProjection.class);
+        var betProj = factory.createProjection(BetProjection.class);
+
+        leaderboardProj.setName(player.getName());
+        leaderboardProj.setUserName(player.getUserName());
+        leaderboardProj.setBets(List.of(betProj));
+
+        leaderboard.add(leaderboardProj);
+
         Mockito.when(playerRepo.findAllByBetsNotEmpty()).thenReturn(leaderboard);
 
         var result = playerService.getLeaderBoard();
         Assertions.assertEquals(leaderboard, result);
         Mockito.verify(playerRepo).findAllByBetsNotEmpty();
+    }
+
+    @Test
+    void getLeaderBoard_LeaderBoardRequestException() {
+
+        var leaderboard = new ArrayList<LeaderboardProjection>();
+
+        Mockito.when(playerRepo.findAllByBetsNotEmpty()).thenReturn(leaderboard);
+        var exception = Assertions.assertThrows(LeaderBoardRequestException.class,
+                () -> playerService.getLeaderBoard());
+
+        Assertions.assertEquals("There are no Games/bets executed to calculate it yet",
+                exception.getMessage());
     }
 
     @Test

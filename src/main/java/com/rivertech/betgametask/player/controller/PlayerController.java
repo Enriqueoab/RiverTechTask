@@ -1,6 +1,8 @@
 package com.rivertech.betgametask.player.controller;
 
 import java.util.List;
+
+import com.rivertech.betgametask.utils.exception.LeaderBoardRequestException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +37,7 @@ class PlayerController {
     @DefaultApiResponses
     @Operation(summary = "Retrieve players leader board")
     @GetMapping(path = "/leaderBoard")
-    public List<LeaderboardProjection> getLeaderBoard() {
+    public List<LeaderboardProjection> getLeaderBoard() throws LeaderBoardRequestException {
         return playerService.getLeaderBoard();
     }
 
