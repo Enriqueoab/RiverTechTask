@@ -2,7 +2,9 @@ package com.rivertech.betgametask.bet;
 
 import lombok.Data;
 import lombok.Builder;
+import java.io.Serial;
 import java.time.Instant;
+import java.io.Serializable;
 import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,7 +24,10 @@ import org.springframework.data.annotation.CreatedDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Records about the bets, from creation to result")
-public class BetHistory {
+public class BetHistory implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID= 2683603585976932412L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +39,7 @@ public class BetHistory {
     private Game game;
 
     @ManyToOne
+    @JsonIgnore
     @Schema(description = "Player that made the bet")
     private Player player;
 

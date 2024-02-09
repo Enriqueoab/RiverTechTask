@@ -24,7 +24,6 @@ import com.rivertech.betgametask.utils.exception.WalletRequestException;
 
 @Slf4j
 @Service
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class BetServiceImpl implements BetService {
 
