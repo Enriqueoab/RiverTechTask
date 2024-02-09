@@ -50,7 +50,7 @@ public class Bet implements Serializable {
     private Game game;
 
     @ManyToOne
-//    @ToString.Exclude
+    @ToString.Exclude
     @Schema(description = "Player that made the bet")
     private Player player;
 
