@@ -3,6 +3,15 @@ server:
   error:
     include-message: always
 
+springdoc:
+  default-produces-media-type: application/json
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
 spring:
   application:
     name: River-Tech-task

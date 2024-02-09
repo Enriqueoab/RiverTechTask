@@ -21,6 +21,7 @@ import com.rivertech.betgametask.game.Game;
 import com.rivertech.betgametask.player.Player;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -44,10 +45,12 @@ public class Bet implements Serializable {
 
     @ManyToOne
     @JsonIgnore
+    @ToString.Exclude
     @Schema(description = "Game related to a specific bet")
     private Game game;
 
     @ManyToOne
+//    @ToString.Exclude
     @Schema(description = "Player that made the bet")
     private Player player;
 
@@ -59,6 +62,7 @@ public class Bet implements Serializable {
     private BetResult betResult;
 
     @JsonIgnore
+    @ToString.Exclude
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "bet", cascade = CascadeType.ALL)
     private List<BetHistory> betHistory;

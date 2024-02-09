@@ -1,4 +1,4 @@
-package com.rivertech.betgametask.bet;
+package com.rivertech.betgametask.player;
 
 public interface BetProjection {
 

@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -35,6 +36,7 @@ public class WalletHistory implements Serializable {
 
     @ManyToOne
     @JsonIgnore
+    @ToString.Exclude
     private Wallet wallet;
 
     public WalletHistory(Wallet wallet, Long balanceBefTrans, TransactionType transactionType) {

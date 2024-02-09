@@ -87,7 +87,7 @@ public class BetServiceImpl implements BetService {
     @Transactional
     public Page<BetHistory> retrieveBetResults(BetHistoryForm betForm, Pageable pageable) throws NotFoundException {
         var player = playerService.findByUserName(betForm.getPlayerUserName());
-        return betHistoryService.retrieveBetResults(player, betForm.isJustExecutedBets(),pageable);
+        return betHistoryService.retrieveBetResults(player, betForm.isJustExecutedBets(), pageable);
     }
 
     protected BetResult betResultSetter(int gameResult, int betNum) {
